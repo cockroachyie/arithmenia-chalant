@@ -5,6 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import cv2
 import matplotlib.pyplot as plt
 from Bio import PDB
 from sklearn.manifold import Isomap
