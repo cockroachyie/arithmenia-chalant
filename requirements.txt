@@ -3,5 +3,6 @@ numpy
 biopython
 matplotlib
 scikit-learn
+pillow
 requests
 streamlit
