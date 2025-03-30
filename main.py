@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import requests
+from PIL import Image
 import numpy as np
 import torch
 import torch.nn as nn
@@ -71,7 +72,9 @@ def compute_contact_map(coords, threshold=8.0, fixed_size=256):
             if dist < threshold:
                 contact_map[i, j] = 1
                 contact_map[j, i] = 1
-    return cv2.resize(contact_map, (fixed_size, fixed_size), interpolation=cv2.INTER_NEAREST)
+    img = Image.fromarray((contact_map * 255).astype(np.uint8)) # Convert to PIL Image
+    img_resized = img.resize((fixed_size, fixed_size), Image.NEAREST)
+    return np.array(img_resized) / 255.0
 
 # Extract C-alpha coordinates
 def extract_ca_coords(pdb_file):
