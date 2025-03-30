@@ -11,7 +11,7 @@ from sklearn.manifold import Isomap
 from mpl_toolkits.mplot3d import Axes3D
 
 # Device setup
-device = torch.device("cpu")  # Streamlit deployment often lacks CUDA
+device = torch.device("cpu")
 
 # Amino acid vocabulary
 AA_VOCAB = "ACDEFGHIKLMNPQRSTVWY"
@@ -159,9 +159,15 @@ def main():
         try:
             download_pdb(pdb_id)
             seq = extract_sequence(f"{pdb_id}.pdb")
+            coords = extract_ca_coords(f"{pdb_id}.pdb")
+            contact_map = compute_contact_map(coords)
             X_tensor = torch.tensor([encode_sequence(seq)], dtype=torch.long).to(device)
+            Y_tensor = torch.tensor([contact_map.flatten()], dtype=torch.float32).to(device)
+
             model = ContactMapPredictor().to(device)
-            model.load_state_dict(torch.load("trained_model.pth", map_location=torch.device('cpu'))) # Load trained model
+            st.write(f"Training on {pdb_id}")
+            train(model, X_tensor, Y_tensor)
+
             with torch.no_grad():
                 pred_contact_map = model(X_tensor).cpu().numpy().reshape(256, 256)
 
