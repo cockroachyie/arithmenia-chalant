@@ -6,7 +6,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
-import cv2
 from Bio import PDB
 from sklearn.manifold import Isomap
 from mpl_toolkits.mplot3d import Axes3D
