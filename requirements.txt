@@ -3,6 +3,5 @@ numpy
 biopython
 matplotlib
 scikit-learn
-opencv-python
 requests
 streamlit
